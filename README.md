@@ -1,11 +1,12 @@
 # SnakesAndLadders
-A 2-player, snakes and ladders game written in c++ to play in the terminal.
+Written by: Bernardo Santiago Marín A01638915, Ana Elena Velasco García A01639866
+A two-player, snakes and ladders game written in c++ to play in the terminal.
 
 ## Class Descriptions
 Helper classes which hold the game's logic.
 
 ### Dice
-**Description:** This class models the behavior of a phisical dice, with the ability to define the number of sides..
+Description: This class models the behavior of a phisical dice, with the ability to define the number of sides..
 
 #### Properties
 - **sides**: int - The number of sides the dice will have.
@@ -23,7 +24,7 @@ Helper classes which hold the game's logic.
     - None
 
 ### Player
-**Description:** A model of a player, holding identity information to play the game.
+Description: A model of a player, holding identity information to play the game.
 
 #### Properties
 - **playernum**: int - The unique playernum, for identity purposes.
@@ -45,7 +46,7 @@ Helper classes which hold the game's logic.
     - None 
 
 ### Board
-**Description:** A model of a board, containing snakes, ladders and normal tiles.
+Description: A model of a board, containing snakes, ladders and normal tiles.
 
 #### Properties
 - **BOARD_TILES**: static int - The numer of tiles the board will have.
@@ -56,50 +57,101 @@ Helper classes which hold the game's logic.
 - **laddersPositions**: int[] - The number positions of the ladders in the board.
 
 #### Methods
-- **Method1()**: ReturnType - Brief description of Method1.
-  - **Parameters:**
-    - **param1**: Type - Description of param1.
-    - **param2**: Type - Description of param2.
-- **Method2()**: ReturnType - Brief description of Method2.
-  - **Parameters:**
-    - **param1**: Type - Description of param1.
-- **Method3()**: ReturnType - Brief description of Method3.
+- `Board()`: Constructor.
   - **Parameters:**
     - None
+- `printBoard()`: void - Prints the board as a square grid, representing each tile with a number, S for snake or L for ladder.
+  - **Parameters:**
+    - None
+- `getTileType(int *pos)`: char - Returns the tile tipe at the given position: N for normal, L for ladder and S for snake.
+  - **Parameters:**
+    - **pos**: int pointer - The position in the board of the tile to check.
+- `isSnakeTile(int *pos)`: bool - Determines whether the given position is a snake tile.
+  - **Parameters**:
+    - **pos**: int pointer - The position in the board of the tile to check.
+- `isLadderTile(int *pos)`: bool - Determines whether the given position is a ladder tile.
+  - **Parameters**:
+    - **pos**: int pointer - The position in the board of the tile to check.
+- `isWinner(int *pos)`: bool - Determines whether the given position of the player makes them win.
+  - **Parameters**:
+    - **pos**: int pointer - The position in the board of the tile to check.
+     
 
-### Class4
-**Description:** Brief description of what Class4 does.
+### Game
+Description: The game's controller class.
 
 #### Properties
-- **Property1**: Type - Brief description of Property1.
-- **Property2**: Type - Brief description of Property2.
-- **Property3**: Type - Brief description of Property3.
+- **board**: Board pointer - The board in which the game will be played.
+- **player1**: Player pointer - The instance of player 1.
+- **player2**: Player pointer - The instance of player 2.
+- **currentPlayer**: Player pointer - The turn of the player about to move.
+- **dice**: Dice pointer - The instance of the dice.
+- **turn**: int - The number of turns since the game started (from 1).
+- **MAX_TURNS**: static int - The maximum number of turns to be played before the game ends itself.
+- **PENALTY**: static int - The number of tiles to be moved back in a snake tile.
+- **REWARD**: static int - The number of tiles to be moved forward in a ladder tile.
 
 #### Methods
-- **Method1()**: ReturnType - Brief description of Method1.
-  - **Parameters:**
-    - **param1**: Type - Description of param1.
-    - **param2**: Type - Description of param2.
-- **Method2()**: ReturnType - Brief description of Method2.
-  - **Parameters:**
-    - **param1**: Type - Description of param1.
-- **Method3()**: ReturnType - Brief description of Method3.
+- `printInstructions()`: void - Prints the instructions of the game, multiplayer.
   - **Parameters:**
     - None
+- `swapPlayerTurn()`: void - Changes `currentPlayer` to be the other player.
+  - **Parameters:**
+    - None
+- `displayMoveInformation(int* tileMoves)`: void - Prints a line containing the information of the previous move.
+  - **Parameters:**
+    - tileMoves: int pointer - The result of rolling the dice.
+- `startGame()`: void - Holds the main game logic, interacting with all the objects and its methods.
+  - **Parameters:**
+    - None 
 
 ## Example Usage
-Provide code examples demonstrating how to create instances of these classes and how to use their methods and properties.
+This is how to set up the game...
 
 ```cpp
-// Example code snippet
-#include "Class1.h"
-#include "Class2.h"
-#include "Class3.h"
-#include "Class4.h"
+// main.cpp
+#include "Game.h"
+
+using namespace std;
 
 int main() {
-    Class1 obj1;
-    obj1.Method1(param1, param2);
-    // Additional example usage
+    Game game{};
+    game.startGame();
+
     return 0;
 }
+```
+
+And the preview of the `startGame()` method:
+```cpp
+#include "Game.h"
+
+void Game::startGame() {
+    char nextInput = 'C';
+    int tileMoves;
+
+    while (nextInput == 'C') {
+        nextInput = currentPlayer->askForInput();
+        tileMoves = dice->rollDice();
+
+        this->displayMoveInformation(&tileMoves);
+
+        int finalTile = currentPlayer->moveBy(tileMoves, board);
+        cout << " Final slot: " << finalTile << endl;
+
+        if(board->isWinner(&finalTile)) {
+            cout << "---Game Over---\n";
+            cout << "Player #" << currentPlayer->getPlayernum() << " is the winner!" << endl;
+            break;
+        }
+
+        if(turn == MAX_TURNS) {
+            cout << "---Game Over---\nThe maximum number of turns has been reached.\n";
+            break;
+        }
+
+        this->swapPlayerTurn();
+        turn++;
+    }
+}
+```
