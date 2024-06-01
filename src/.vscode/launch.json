@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/bernardo/Library/Mobile Documents/com~apple~CloudDocs/Tareas/Segundo Semestre/OOP Segundo Semestre/SnakesAndLadders/src",
+      "program": "/Users/bernardo/Library/Mobile Documents/com~apple~CloudDocs/Tareas/Segundo Semestre/OOP Segundo Semestre/SnakesAndLadders/src/build/Debug/outDebug"
+    }
+  ]
+}
