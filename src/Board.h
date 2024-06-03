@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <iterator>
+#include "Cell.h"
 
 #ifndef BOARD_H_
 #define BOARD_H_
@@ -22,8 +23,9 @@ class Board {
         static const int SNAKES = 3;
         static const int LADDERS = 3;
 
-        string board[Board::BOARD_TILES];
-        char boardAsTilesType[Board::BOARD_TILES];
+        // string board[Board::BOARD_TILES];
+        Cell* board[Board::BOARD_TILES];
+        // char boardAsTilesType[Board::BOARD_TILES];
         int snakePositions[Board::SNAKES] = {5, 9, 17};
         int laddersPositions[Board::LADDERS] = {7, 19, 27};
 

@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Game.h"
 
 Board::Board() {
     constructBoard();
@@ -7,39 +8,44 @@ Board::Board() {
 } 
 
 void Board::constructBoard() {
-    for (int i = 0; i < BOARD_TILES; i++) {
-        board[i] = to_string(i+1);
-        boardAsTilesType[i] = 'N';
+    for (int i = 0; i < BOARD_TILES; i++) { 
+        board[i] = new NormalCell(i+1, 0);
     }
 
     for (int i : snakePositions) {
-        board[i-1] = "S";
-        boardAsTilesType[i-1] = 'S';
+        board[i-1] = new SnakeCell(i, Game::PENALTY);
     }
 
     for (int i : laddersPositions) {
-        board[i-1] = "L";
-        boardAsTilesType[i-1] = 'L';
+        board[i-1] = new LadderCell(i, Game::REWARD);
     }
 }
 
 void Board::printBoard() {
     cout << "------- Game Board -------\n\n";
     const int eol = floor(sqrt(BOARD_TILES)); // when to display a new row
-    for (int i = 0; i < BOARD_TILES; i++) { 
-        string cell = board[i];
-        cout << cell << " ";
-        
-        if (cell.size() == 1) cout << " ";
-        if ((i+1) % eol == 0) cout << endl;
+
+    for (Cell* cell : board) {
+        int position = cell->getPosition();
+        char type = cell->getType();
+        if (type == 'N') {
+            cout << position << " ";
+        } else {
+            cout << type << " ";
+        }
+
+        if (to_string(position).size() == 1) cout << " ";
+        if ((position) % eol == 0) cout << endl;
     }
+
     cout << endl;
 }
 
 char Board::getTileType(int* pos) {
-    if (*pos >= Board::BOARD_TILES) return boardAsTilesType[Board::BOARD_TILES - 1];
+    char _pos = board[BOARD_TILES - 1]->getType();
+    if (*pos >= BOARD_TILES) return _pos;
 
-    return boardAsTilesType[*pos-1];
+    return board[*pos-1]->getType();
 }
 
 bool Board::isSnakeTile(int* tile) {
@@ -57,5 +63,5 @@ bool Board::isLadderTile(int* tile) {
 }
 
 bool Board::isWinner(int* pos) {
-    return *pos >= Board::BOARD_TILES - 1;
+    return *pos >= BOARD_TILES - 1;
 }

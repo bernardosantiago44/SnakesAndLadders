@@ -9,11 +9,15 @@ using namespace std;
 
 class Game {
 private:
-    Board* board;
+    Board* boardPtr;
     Player* player1;
     Player* player2;
     Dice* dice;
     int turn;
+
+    void inputRewardValue();
+    void inputPunishmentValue();
+
 protected:
     static const int MAX_TURNS = 18;
 
@@ -28,8 +32,8 @@ public:
 
     void startGame();
 
-    static const int PENALTY = 3;
-    static const int REWARD  = 3;
+    static int PENALTY;
+    static int REWARD;
 };
 
 #endif

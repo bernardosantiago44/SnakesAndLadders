@@ -2,15 +2,32 @@
 #include "Board.h"
 
 Game::Game() {
-    board = new Board();
+
+    this->inputRewardValue();
+    this->inputPunishmentValue();
+
+    boardPtr = new Board();
     player1 = new Player(1);
     player2 = new Player(2);
     dice = new Dice(6);
     turn = 1;
 
     currentPlayer = player1;
-
     this->printInstructions();
+}
+
+void Game::inputRewardValue() {
+    int c;
+    cout << "Enter the reward for ladders: ";
+    cin >> c;
+    REWARD = c - '0';
+}
+
+void Game::inputPunishmentValue() {
+    int c;
+    cout << "Enter the punishment for snakes: ";
+    cin >> c;
+    PENALTY = c - '0';
 }
 
 void Game::printInstructions() {
@@ -27,10 +44,10 @@ void Game::startGame() {
 
         this->displayMoveInformation(&tileMoves);
 
-        int finalTile = currentPlayer->moveBy(tileMoves, board);
+        int finalTile = currentPlayer->moveBy(tileMoves, boardPtr);
         cout << " Final slot: " << finalTile << endl;
 
-        if(board->isWinner(&finalTile)) {
+        if(boardPtr->isWinner(&finalTile)) {
             cout << "---Game Over---\n";
             cout << "Player #" << currentPlayer->getPlayernum() << " is the winner!" << endl;
             break;
