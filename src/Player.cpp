@@ -25,7 +25,7 @@ char Player::askForInput() {
 /// @param board Reference to the board in which the game is being played.
 /// @return The final tile position.
 int Player::moveBy(int tiles, Board* board) {
-    const int maxBox = Board::BOARD_TILES;
+    const int maxBox = board->getTiles();
     currentSlot += tiles;
 
     if (board->isSnakeTile(&currentSlot)) {
