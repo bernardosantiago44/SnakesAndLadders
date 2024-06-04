@@ -25,16 +25,18 @@ char Player::askForInput() {
 /// @param board Reference to the board in which the game is being played.
 /// @return The final tile position.
 int Player::moveBy(int tiles, Board* board) {
-    const int maxBox = Board::BOARD_TILES;
+    const int maxBox = board->getTiles();
     currentSlot += tiles;
 
     if (board->isSnakeTile(&currentSlot)) {
-        currentSlot -= Game::PENALTY;
+        currentSlot -= board->getPenalty();
+        currentSlot = (currentSlot > maxBox) ? maxBox : currentSlot;
         cout << "S";
         return currentSlot;
     }
     if (board->isLadderTile(&currentSlot)) {
-        currentSlot += Game::REWARD; 
+        currentSlot += board->getReward(); 
+        currentSlot = (currentSlot > maxBox) ? maxBox : currentSlot;
         cout << "L";
         return currentSlot;
     }

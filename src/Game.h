@@ -9,27 +9,38 @@ using namespace std;
 
 class Game {
 private:
-    Board* board;
-    Player* player1;
-    Player* player2;
+    Board* boardPtr;
+    vector<Player*> players = {new Player(1)};
     Dice* dice;
     int turn;
+    int numberOfPlayers;
+    char gameType;
+
+    void inputNumericValue(int* value, string message);
+    void constructPlayers();
+    char askForGameType();
+
 protected:
-    static const int MAX_TURNS = 18;
+    int MAX_TURNS = 18;
 
     Player* currentPlayer;
 
     void printInstructions();
-    void swapPlayerTurn();
+    void nextPlayerTurn();
     void displayMoveInformation(int* tileMoves);
 
 public:
     Game();
+    Game(int tiles, int ladders, int snakes, 
+         int penalty, int reward, int players, 
+         int maxTurns);
 
     void startGame();
 
-    static const int PENALTY = 3;
-    static const int REWARD  = 3;
+    int PENALTY;
+    int REWARD;
+    int SNAKES;
+    int LADDERS;
 };
 
 #endif
