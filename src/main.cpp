@@ -1,19 +1,18 @@
 #include "Game.h"
 
 using namespace std;
-int Game::PENALTY = 3;
-int Game:: REWARD = 3;
 
 int main() {
-    int tiles = 30;
-    int ladders = 3;
-    int snakes = 3;
-    int penalty = 3;
+    srand(time(NULL));
+    int tiles = 36; // Preferable a perfect square
+    int ladders = 3; // Not more than 10% of the total tiles
+    int snakes = 3; // Not more than 10% of the total tiles
+    int penalty = 4;
     int reward = 3;
-    int players = 2;
-    int maxTurns = 18;
+    int players = 3;
+    int maxTurns = 22;
 
-    Game game{};
+    Game game(tiles, ladders, snakes, penalty, reward, players, maxTurns);
     game.startGame();
     return 0;
 }

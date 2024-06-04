@@ -10,7 +10,7 @@ Dice::Dice(int _sides) {
 }
 
 int Dice::rollDice() {
-    srand((unsigned int) time(NULL));
+    // srand((unsigned int) time(NULL));
     result = (rand() % sides) + 1;
     return result;
 }

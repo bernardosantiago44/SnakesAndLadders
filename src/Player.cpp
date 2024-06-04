@@ -29,12 +29,14 @@ int Player::moveBy(int tiles, Board* board) {
     currentSlot += tiles;
 
     if (board->isSnakeTile(&currentSlot)) {
-        currentSlot -= Game::PENALTY;
+        currentSlot -= board->getPenalty();
+        currentSlot = (currentSlot > maxBox) ? maxBox : currentSlot;
         cout << "S";
         return currentSlot;
     }
     if (board->isLadderTile(&currentSlot)) {
-        currentSlot += Game::REWARD; 
+        currentSlot += board->getReward(); 
+        currentSlot = (currentSlot > maxBox) ? maxBox : currentSlot;
         cout << "L";
         return currentSlot;
     }

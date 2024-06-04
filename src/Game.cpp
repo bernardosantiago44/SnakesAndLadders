@@ -12,35 +12,27 @@ Game::Game() {
     inputNumericValue(&ladders, "Enter the number of ladders: ");
     inputNumericValue(&PENALTY, "Enter the penalty for snakes: ");
     inputNumericValue(&REWARD, "Enter the reward for ladders: ");
-    constructPlayers();
-    boardPtr = new Board(tiles, snakes, ladders);
-    dice = new Dice(6);
-    turn = 1;
-    this->gameType = askForGameType();
-
-    currentPlayer = players[0];
-    this->printInstructions();
+    
+    Game(tiles, ladders, snakes, PENALTY, REWARD, numberOfPlayers, MAX_TURNS);
 }
 
 Game::Game(int tiles, int ladders, int snakes, int penalty, int reward, int players, int maxTurns) {
-    PENALTY = penalty;
-    REWARD = reward;
     MAX_TURNS = maxTurns;
     numberOfPlayers = players;
     this->gameType = askForGameType();
 
-    boardPtr = new Board(tiles, snakes, ladders);
+    boardPtr = new Board(&tiles, &snakes, &ladders, &penalty, &reward);
     dice = new Dice(6);
     turn = 1;
-    this->constructPlayers();
+    constructPlayers();
 
     currentPlayer = this->players[0];
     this->printInstructions();
 }
 
 void Game::constructPlayers() {
-    for (int i = 0; i < numberOfPlayers; i++) {
-        players.push_back(new Player(i+1));
+    for (int i = 1; i < numberOfPlayers; i++) {
+        this->players.push_back(new Player(i+1));
     }
 }
 
@@ -48,7 +40,7 @@ void Game::printInstructions() {
     cout << "Press C to continue next turn, or E to end the game" << endl;
 }
 
-void inputNumericValue(int* value, string message) {
+void Game::inputNumericValue(int* value, string message) {
     int c;
     cout << message;
     cin >> c;
@@ -60,7 +52,9 @@ void Game::startGame() {
     int tileMoves;
 
     while (nextInput == 'C') {
-        nextInput = currentPlayer->askForInput();
+        if (gameType == 'M') {
+            nextInput = currentPlayer->askForInput();
+        } 
         tileMoves = dice->rollDice();
 
         this->displayMoveInformation(&tileMoves);
@@ -85,7 +79,7 @@ void Game::startGame() {
 }
 
 void Game::nextPlayerTurn() {
-    auto iterator = find(players.begin(), players.end(), *currentPlayer);
+    auto iterator = find(players.begin(), players.end(), currentPlayer);
     if (iterator != players.end()) {
         int index = distance(players.begin(), iterator);
         if (index == players.size() - 1) {
@@ -102,6 +96,7 @@ void Game::nextPlayerTurn() {
 
 void Game::displayMoveInformation(int* tileMoves) {
     cout << "Turn " << turn;
+    if (turn < 10) cout << " ";
     cout << " Player " << currentPlayer->getPlayernum();
     cout << " Current pos: " << currentPlayer->getCurrentPosition();
     cout << " Moves by: " << *tileMoves;

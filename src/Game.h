@@ -10,7 +10,7 @@ using namespace std;
 class Game {
 private:
     Board* boardPtr;
-    vector<Player*> players;
+    vector<Player*> players = {new Player(1)};
     Dice* dice;
     int turn;
     int numberOfPlayers;
@@ -37,10 +37,10 @@ public:
 
     void startGame();
 
-    static int PENALTY;
-    static int REWARD;
-    static int SNAKES;
-    static int LADDERS;
+    int PENALTY;
+    int REWARD;
+    int SNAKES;
+    int LADDERS;
 };
 
 #endif

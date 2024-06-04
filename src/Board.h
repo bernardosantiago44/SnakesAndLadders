@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cmath>
+#include <random>
 #include <vector>
 #include "Cell.h"
 
@@ -10,7 +10,8 @@ using namespace std;
 
 class Board {
     public:
-        Board(int tiles, int snakes, int ladders);
+        Board(int *tiles, int *snakes, int *ladders,
+              int *penalty, int *reward);
         void printBoard();
 
         char getTileType(int* pos);
@@ -18,19 +19,23 @@ class Board {
         bool isLadderTile(int* tile);
         bool isWinner(int* pos);
         int getTiles();
+        int getPenalty();
+        int getReward();
 
     private:
 
-        vector<Cell*> board;
-        int tiles, snakes, ladders;
-        vector<int> snakePositions = {5, 9, 17};
-        vector<int> laddersPositions = {7, 19, 27};
+        vector<Cell*> board = {};
+        int tiles, snakes, ladders, penalty, reward;
+        vector<int> snakePositions = {};
+        vector<int> laddersPositions = {};
 
         void constructBoard();
         void positionSnakes();
         void positionLadders();
         void placeSnakes();
         void placeLadders();
+        void generateSnakes();
+        void generateLadders();
 };
 
 #endif
