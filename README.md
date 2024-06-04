@@ -1,5 +1,5 @@
 # SnakesAndLadders
-Written by: Bernardo Santiago Marín A01638915, Ana Elena Velasco García A01639866
+Written by: Bernardo Santiago Marín A01638915, Ana Elena Velasco García A01639866, Emilio Pardo Gutiérrez A01644781.
 A two-player, snakes and ladders game written in c++ to play in the terminal.
 
 ## Class Descriptions
